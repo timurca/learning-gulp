@@ -64,7 +64,8 @@ gulp.task('serve', ['sass'], function() {
     browserSync.init({
         server: "./build"
     });
-
+    
+    gulp.watch("js/*.js", ['scripts']);	
     gulp.watch("scss/*.scss", ['sass']);
     gulp.watch("build/*.html").on('change', browserSync.reload);
 });
