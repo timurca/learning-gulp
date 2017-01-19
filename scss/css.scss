@@ -1,0 +1,77 @@
+html   {
+  height:100%;
+  width:100%;
+}
+
+img   {
+  margin-left: 100px;
+  margin-top: 30px;
+}
+
+body
+  {
+  background-color: #fff;
+}
+
+.card 
+  {
+  width:400px;
+  height: 200px;
+  background: #fff;
+  position: absolute;
+  left:50%;
+  top:50%;
+  margin-left:-200px;
+  margin-top:-100px;
+              
+}
+
+.card .image  {
+  overflow:hidden;
+  width:400px;
+  height: 200px;
+  *background:#6cd3ac;
+  background-color: #a4d4bd;
+  background-image: -webkit-gradient(radial,   50% 0%,  0,  50% 0%,  200,   from(rgb(108,   211,   172)),   to(rgb(164,   212,   189)));
+  background-image: -webkit-radial-gradient(50% 0%,   rgb(164,   212,   189),   rgb(108,   211,   172));
+  background-image: -moz-radial-gradient(50% 0%,   rgb(164,   212,   189),   rgb(108,   211,   172));
+  background-image: -o-radial-gradient(50% 0%,   rgb(164,   212,   189),   rgb(108,   211,   172));
+  background-image: -ms-radial-gradient(50% 0%,   rgb(164,   212,   189),   rgb(108,   211,   172));
+  background-image: radial-gradient(50% 0%,   rgb(164,   212,   189),   rgb(108,   211,   172));
+  position:relative;
+	    
+}
+
+.card:before  {
+  content:"";
+  width:80%;
+  height:8px;
+  bottom: 18px;
+  left: 13px;
+  z-index: -1;
+  background: #fff;
+  position: absolute;
+  box-shadow: -10px 10px 20px #000;
+  -moz-transform: scale(1) rotate(-5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  -webkit-transform: scale(1) rotate(-5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  -o-transform: scale(1) rotate(-5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  -ms-transform: scale(1) rotate(-5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  transform: scale(1) rotate(-5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+}
+
+.card:after  {
+  content:"";
+  width:80%;
+  z-index: -1;
+  background: #fff;
+  height:8px;
+  bottom: 18px;
+  right: 13px;
+  position: absolute;
+  box-shadow: 10px 10px 20px #000;
+  -moz-transform: scale(1) rotate(5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  -webkit-transform: scale(1) rotate(5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  -o-transform: scale(1) rotate(5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  -ms-transform: scale(1) rotate(5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+  transform: scale(1) rotate(5deg) translateX(0px) translateY(0px) skewX(0deg) skewY(0deg);
+}

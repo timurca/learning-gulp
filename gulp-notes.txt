@@ -1,0 +1,435 @@
+>>>>init<<<<<
+-----------
+install node from nodejs.org
+----------------------------
+npm install -g gulp
+
+sudo (if there is errors)
+sudo !! (fills previous command)
+
+npm install --save-dev gulp (install into local project)
+
+----------------------------------------------------------
+
+// install packages:
+
+npm install gulp
+npm install --save-dev gulp-uglify
+npm install --save-dev gulp-ruby-sass
+npm install --save-dev gulp-sass
+npm install --save-dev gulp-imagemin
+npm install --save-dev gulp-autoprefixer
+npm install browser-sync gulp --save-dev
+
+gulp
+Ctrl+C   // stop gulp watch
+
+-------------------------
+create & copy gulpfile.js
+-------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+>>>> !!!!!! Automated and enhanced workflow !!!!!!!!!<<<<< 
+
+// Browser-sync
+var gulp        = require('gulp');
+var browserSync = require('browser-sync').create();
+
+
+// Misc
+var uglify = require('gulp-uglify'),
+	conv_sass = require('gulp-ruby-sass'),
+	sass = require('gulp-sass'),
+	livereload = require('gulp-livereload'),
+	imagemin = require('gulp-imagemin'),
+	prefix = require('gulp-autoprefixer');
+
+// Function to console.log Errors
+function errorLog(error){
+	console.error.bind(error);
+	this.emit('end');
+}
+
+
+// Browser-sync
+// Static Server + watching scss/html files
+gulp.task('serve', ['sass'], function() {
+
+    browserSync.init({
+        server: "./build"
+    });
+
+    gulp.watch("build/scss/*.scss", ['sass']);
+    gulp.watch("build/*.html").on('change', browserSync.reload);
+});
+
+// Browser-sync
+// Compile sass into CSS & auto-inject into browsers
+gulp.task('sass', function() {
+    return gulp.src("build/scss/*.scss")
+        .pipe(sass())
+        .pipe(gulp.dest("build/css"))
+        .pipe(browserSync.stream());
+});
+
+
+
+
+
+// Misc
+// Minify JS
+gulp.task('scripts', function (){
+	gulp.src('js/*.js')
+		.on('error', errorLog)
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'));
+});
+
+
+// Misc
+// Sass to CSS + minify
+gulp.task('conv_sass', function () {
+  return conv_sass('scss/*.scss')
+  	
+  	.pipe(sass({ 
+  		outputStyle: 'compressed'   // minify
+  	 }))
+    
+    .on('error', errorLog)           // show errors
+
+    .pipe(prefix('last 6 versions')) // prefix makes scss compatible to older browsers (eg last 6 versions)
+    
+    .pipe(gulp.dest('build/css'))     // write to css folder
+    .pipe(livereload());
+});
+
+// Misc
+// Minify Images
+gulp.task('imagemin', function (){
+	gulp.src('images/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('build/images'));
+});
+
+
+
+// Run
+gulp.task('default',['scripts','conv_sass','imagemin','serve']);
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+
+>>>>2<<<<< // start
+
+
+//start gulpfile.js
+var gulp = require ('gulp');
+
+gulp.task('default', function (){
+	console.log('Hello World');
+});
+//end gulpfile.js
+
+
+
+
+>>>>3<<<<< // uglify
+-----------
+gulpjs.com/plugins
+	search for 'gulp-uglify'
+npm install --save-dev gulp-uglify
+
+
+//start gulpfile.js
+var gulp = require ('gulp'),
+	uglify = require('gulp-uglify');
+
+
+gulp.task('default', function (){
+	gulp.src('js/*.js')
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'))
+});
+//end gulpfile.js
+
+
+
+
+>>>>4<<<<< // watch
+-----------
+//start gulpfile.js
+var gulp = require ('gulp'),
+	uglify = require('gulp-uglify');
+
+
+// Scripts
+gulp.task('scripts', function (){
+	gulp.src('js/*.js')
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'))
+});
+
+// Styles
+gulp.task('styles', function (){
+	console.log('run styles');
+});
+
+// Watch
+gulp.task('watch', function(){
+	gulp.watch('js/*.js',['scripts']);
+});
+
+gulp.task('default',['scripts','styles','watch']);
+//end gulpfile.js
+
+Ctrl+C   // stop gulp watch
+
+
+
+>>>>5<<<<< // sass to css
+-----------
+	http://sass-lang.com/install
+
+gulpjs.com/plugins
+	search for 'gulp-ruby-sass'
+npm install --save-dev gulp-ruby-sass
+
+
+//start gulpfile.js
+var gulp = require ('gulp'),
+	uglify = require('gulp-uglify'),
+	conv_sass = require('gulp-ruby-sass');
+
+
+// Minify JS
+gulp.task('scripts', function (){
+	gulp.src('js/*.js')
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'))
+});
+
+
+// Sass to CSS
+gulp.task('conv_sass', function () {
+  return conv_sass('scss/*.scss')
+    .pipe(gulp.dest('build/css'));
+});
+
+// Watch
+gulp.task('watch', function(){
+	gulp.watch('js/*.js',['scripts']);
+	gulp.watch('scss/*.scss',['conv_sass']);
+});
+
+// Run
+gulp.task('default',['scripts','conv_sass','watch']);
+//end gulpfile.js
+
+
+
+>>>>6<<<<< // sass to minify css
+-----------
+	npm install --save-dev gulp-sass
+
+
+// Sass to CSS + minify
+var sass = require('gulp-sass');
+
+gulp.task('conv_sass', function () {
+  return conv_sass('scss/*.scss')
+  	
+  	.pipe(sass({ 
+  		outputStyle: 'compressed' 
+  	 }))
+    
+    .on('error', errorLog)
+    
+    .pipe(gulp.dest('build/css'))
+    .pipe(livereload());
+});
+
+
+
+
+>>>>7<<<<< // using error function rather than plumber
+-----------
+
+//start gulpfile.js
+var gulp = require ('gulp'),
+	uglify = require('gulp-uglify'),
+	conv_sass = require('gulp-ruby-sass');
+
+
+// Function to console.log Errors
+function errorLog(error){
+	console.error.bind(error)
+	this.emit('end');
+}
+
+
+// Minify JS
+gulp.task('scripts', function (){
+	gulp.src('js/*.js')
+		.on('error', errorLog)
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'))
+});
+
+
+
+// Sass to CSS
+gulp.task('conv_sass', function () {
+  return conv_sass('scss/*.scss')
+    .on('error', errorLog)
+    .pipe(gulp.dest('build/css'));
+});
+
+// Watch
+gulp.task('watch', function(){
+	gulp.watch('js/*.js',['scripts']);
+	gulp.watch('scss/*.scss',['conv_sass']);
+});
+
+// Run
+gulp.task('default',['scripts','conv_sass','watch']);
+//end gulpfile.js
+
+
+
+
+
+>>>>9<<<<< // imagemin 
+-----------
+
+npm install --save-dev gulp-imagemin
+
+//start gulpfile.js
+var gulp = require ('gulp'),
+	uglify = require('gulp-uglify'),
+	conv_sass = require('gulp-ruby-sass'),
+	livereload = require('gulp-livereload'),
+	imagemin = require('gulp-imagemin');
+
+
+// Function to console.log Errors
+function errorLog(error){
+	console.error.bind(error)
+	this.emit('end');
+}
+
+
+// Minify JS
+gulp.task('scripts', function (){
+	gulp.src('js/*.js')
+		.on('error', errorLog)
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'));
+});
+
+
+
+// Sass to CSS
+gulp.task('conv_sass', function () {
+  return conv_sass('scss/*.scss')
+    .on('error', errorLog)
+    .pipe(gulp.dest('build/css'))
+    .pipe(livereload());
+});
+
+// Minify Images
+gulp.task('imagemin', function (){
+	gulp.src('imgs/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('build/imgs'));
+});
+
+// Watch
+gulp.task('watch', function(){
+
+	var server = livereload();
+
+	gulp.watch('js/*.js',['scripts']);
+	gulp.watch('scss/*.scss',['conv_sass']);
+	gulp.watch('imgs/*',['imagemin']);
+});
+
+// Run
+gulp.task('default',['scripts','conv_sass','imagemin','watch']);
+//end gulpfile.js
+
+
+>>>>10<<<<< // autoprefixer 
+-----------
+
+npm install --save-dev gulp-autoprefixer
+
+//start gulpfile.js
+var gulp = require ('gulp'),
+	uglify = require('gulp-uglify'),
+	conv_sass = require('gulp-ruby-sass'),
+	sass = require('gulp-sass'),
+	livereload = require('gulp-livereload'),
+	imagemin = require('gulp-imagemin'),
+	prefix = require('gulp-autoprefixer');
+
+
+// Function to console.log Errors
+function errorLog(error){
+	console.error.bind(error)
+	this.emit('end');
+}
+
+
+// Minify JS
+gulp.task('scripts', function (){
+	gulp.src('js/*.js')
+		.on('error', errorLog)
+		.pipe(uglify())
+		.pipe(gulp.dest('build/js'));
+});
+
+
+
+// Sass to CSS + minify
+gulp.task('conv_sass', function () {
+  return conv_sass('scss/*.scss')
+  	
+  	.pipe(sass({ 
+  		outputStyle: 'compressed'   // minify
+  	 }))
+    
+    .on('error', errorLog)           // show errors
+
+    .pipe(prefix('last 6 versions')) // prefix makes scss compatible to older browsers (eg last 6 versions)
+    
+    .pipe(gulp.dest('build/css'))     // write to css folder
+    .pipe(livereload());
+});
+
+// Minify CSS
+
+
+// Minify Images
+gulp.task('imagemin', function (){
+	gulp.src('imgs/*')
+		.pipe(imagemin())
+		.pipe(gulp.dest('build/imgs'));
+});
+
+
+// Watch
+gulp.task('watch', function(){
+
+	var server = livereload();
+
+	gulp.watch('js/*.js',['scripts']);
+	gulp.watch('scss/*.scss',['conv_sass']);
+	gulp.watch('imgs/*',['imagemin']);
+});
+
+// Run
+gulp.task('default',['scripts','conv_sass','imagemin','serve']);
+//end gulpfile.js
